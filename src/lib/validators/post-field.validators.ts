@@ -1,7 +1,18 @@
+import { FORBIDDEN_WORDS } from "../constants/forbidden-words";
+
 export const postFieldValidators = {
   title: (value: string) => {
-    if (!value || value.trim().length === 0) {
+    const trimmedValue = value.replace(/ /g, "");
+
+    if (!trimmedValue || trimmedValue.length === 0) {
       return "제목을 입력해주세요.";
+    }
+
+    const forbiddenWord = FORBIDDEN_WORDS.find((word) =>
+      trimmedValue.includes(word)
+    );
+    if (forbiddenWord) {
+      return `금칙어(${forbiddenWord})이/가 포함되어 있습니다.`;
     }
 
     if (value.length < 2) {
@@ -16,8 +27,17 @@ export const postFieldValidators = {
   },
 
   content: (value: string) => {
-    if (!value || value.trim().length === 0) {
+    const trimmedValue = value.replace(/ /g, "");
+
+    if (!trimmedValue || trimmedValue.length === 0) {
       return "내용을 입력해주세요.";
+    }
+
+    const forbiddenWord = FORBIDDEN_WORDS.find((word) =>
+      trimmedValue.includes(word)
+    );
+    if (forbiddenWord) {
+      return `금칙어(${forbiddenWord})이/가 포함되어 있습니다.`;
     }
 
     if (value.length < 10) {
@@ -40,10 +60,17 @@ export const postFieldValidators = {
   },
 
   tag: (newTag: string, existingTags: string[]) => {
-    const trimmedTag = newTag.trim();
+    const trimmedTag = newTag.replace(/ /g, "");
 
     if (!trimmedTag) {
       return "태그를 입력해주세요.";
+    }
+
+    const forbiddenWord = FORBIDDEN_WORDS.find((word) =>
+      trimmedTag.includes(word)
+    );
+    if (forbiddenWord) {
+      return `금칙어(${forbiddenWord})이/가 포함되어 있습니다.`;
     }
 
     if (newTag.length > 24) {
