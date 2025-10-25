@@ -16,7 +16,7 @@ interface GetPostsParams {
 
 interface CreatePostData {
   title: string;
-  content: string;
+  body: string;
   category: PostCategory;
 }
 

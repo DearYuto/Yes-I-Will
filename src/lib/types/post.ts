@@ -1,5 +1,3 @@
-import { Tag } from "./tag";
-
 export type PostCategory = "NOTICE" | "QNA" | "FREE";
 
 export interface Post {
@@ -8,14 +6,14 @@ export interface Post {
   title: string;
   body?: string;
   category: PostCategory;
-  tags?: Tag[];
+  tags?: string[];
   createdAt: string;
 }
 
 export interface PostFormData {
-  id: number;
+  id?: number;
   title: string;
-  content: string;
+  body: string;
   category: PostCategory;
-  tags?: Tag[];
+  tags: string[];
 }
