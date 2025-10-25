@@ -1,4 +1,4 @@
-import { getAuthStatus } from "@/lib/utils/auth/getAuthStatus";
+import { getAuthStatus } from "@/lib/utils/auth/get-auth-status";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -16,7 +16,6 @@ export function proxy(request: NextRequest) {
   };
 
   const { isAuthenticated } = getAuthStatus(request);
-  console.log(isAuthenticated, "isAuthenticated");
 
   if (pathname === ROUTES.HOME) {
     return redirectTo(isAuthenticated ? ROUTES.POSTS : ROUTES.LOGIN);
@@ -26,7 +25,7 @@ export function proxy(request: NextRequest) {
     return redirectTo(ROUTES.POSTS);
   }
 
-  if (!isAuthenticated && pathname === ROUTES.POSTS) {
+  if (!isAuthenticated && pathname.startsWith(ROUTES.POSTS)) {
     return redirectTo(ROUTES.LOGIN);
   }
 
