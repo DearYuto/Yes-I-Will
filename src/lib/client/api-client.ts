@@ -88,7 +88,10 @@ class ApiClient {
     return await response.json();
   }
 
-  async get<T>(endpoint: string, params?: Record<string, T>): Promise<T> {
+  async get<T>(
+    endpoint: string,
+    params?: Record<string, QueryValue>
+  ): Promise<T> {
     return this.request<T>(endpoint, {
       method: "GET",
       cache: "no-store",
