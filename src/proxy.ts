@@ -16,6 +16,7 @@ export function proxy(request: NextRequest) {
   };
 
   const { isAuthenticated } = getAuthStatus(request);
+  console.log(isAuthenticated, "isAuthenticated");
 
   if (pathname === ROUTES.HOME) {
     return redirectTo(isAuthenticated ? ROUTES.POSTS : ROUTES.LOGIN);
