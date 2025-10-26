@@ -9,6 +9,7 @@ import {
 import PostHeader from "@/components/features/posts/post-header";
 import PostTableRow from "@/components/features/posts/post-table-row";
 import { CursorPagination } from "@/components/features/posts/post-cursor-pagination";
+import { PostToolbar } from "@/components/features/posts/post-toolbar";
 import postService from "@/lib/services/post-service";
 import { PostSearchParams } from "@/lib/types/post";
 import PageContainer from "@/components/common/page-container";
@@ -39,6 +40,8 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   return (
     <PageContainer>
       <PostHeader title="게시판" />
+
+      <PostToolbar />
 
       <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
         <div className="flex flex-col h-[600px]">
