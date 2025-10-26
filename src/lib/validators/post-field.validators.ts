@@ -19,8 +19,8 @@ export const postFieldValidators = {
       return "제목은 최소 2자 이상이어야 합니다.";
     }
 
-    if (value.length > 100) {
-      return "제목은 최대 100자까지 입력 가능합니다.";
+    if (value.length > 80) {
+      return "제목은 최대 80자까지 입력 가능합니다.";
     }
 
     return undefined;
@@ -44,8 +44,8 @@ export const postFieldValidators = {
       return "내용은 최소 10자 이상이어야 합니다.";
     }
 
-    if (value.length > 5_000) {
-      return "내용은 최대 5,000자까지 입력 가능합니다.";
+    if (value.length > 2_000) {
+      return "내용은 최대 2,000자까지 입력 가능합니다.";
     }
 
     return undefined;
