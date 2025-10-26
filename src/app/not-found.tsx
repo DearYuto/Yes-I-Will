@@ -17,9 +17,6 @@ export default function NotFound() {
           <Button variant="outline" asChild className="shadow-none">
             <Link href="/posts">게시판으로</Link>
           </Button>
-          <Button asChild className="shadow-none">
-            <Link href="/">홈으로</Link>
-          </Button>
         </div>
       </div>
     </div>
