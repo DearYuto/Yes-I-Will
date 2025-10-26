@@ -1,12 +1,5 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import PostForm from "./post-form";
 import { PostFormStrategies } from "@/lib/strategies/post-form.strategies";
 import PageContainer from "@/components/common/page-container";
@@ -35,19 +28,14 @@ const PostFormContainer = ({
 
   return (
     <PageContainer>
-      <Card className="w-full max-w-3xl shadow-none">
-        <CardHeader className="border-b-0">
-          <CardTitle className="text-2xl font-bold">{title}</CardTitle>
-          {description && (
-            <CardDescription className="text-sm text-muted-foreground">
-              {description}
-            </CardDescription>
-          )}
-        </CardHeader>
-        <CardContent className="p-0">
-          <PostForm strategy={strategy} />
-        </CardContent>
-      </Card>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold">{title}</h1>
+        {description && (
+          <p className="text-sm text-gray-500 mt-2">{description}</p>
+        )}
+      </div>
+
+      <PostForm strategy={strategy} />
     </PageContainer>
   );
 };

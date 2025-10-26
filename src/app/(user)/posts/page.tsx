@@ -11,6 +11,7 @@ import PostTableRow from "@/components/features/posts/post-table-row";
 import { CursorPagination } from "@/components/features/posts/post-cursor-pagination";
 import postService from "@/lib/services/post-service";
 import { PostSearchParams } from "@/lib/types/post";
+import PageContainer from "@/components/common/page-container";
 
 interface PostsPageProps {
   searchParams: Promise<PostSearchParams>;
@@ -36,7 +37,7 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
   });
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <PageContainer>
       <PostHeader title="게시판" />
 
       <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
@@ -88,6 +89,6 @@ export default async function PostsPage({ searchParams }: PostsPageProps) {
           </div>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 }

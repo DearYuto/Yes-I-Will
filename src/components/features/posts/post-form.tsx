@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "@tanstack/react-form";
 import { Button } from "@/components/ui/button";
-import { CardContent, CardFooter } from "@/components/ui/card";
 import { PostFormStrategy } from "@/lib/strategies/post-form.strategies";
 import { PostFormData } from "@/lib/types/post";
 import {
@@ -48,26 +47,25 @@ const PostForm = ({ strategy }: { strategy: PostFormStrategy }) => {
         e.stopPropagation();
         form.handleSubmit();
       }}
+      className="space-y-6 max-w-5xl"
     >
-      <CardContent className="space-y-6">
-        <form.Field {...titleFieldConfig}>
-          {(field) => <PostTitleField field={field} />}
-        </form.Field>
+      <form.Field {...titleFieldConfig}>
+        {(field) => <PostTitleField field={field} />}
+      </form.Field>
 
-        <form.Field {...categoryFieldConfig}>
-          {(field) => <PostCategoryField field={field} />}
-        </form.Field>
+      <form.Field {...categoryFieldConfig}>
+        {(field) => <PostCategoryField field={field} />}
+      </form.Field>
 
-        <form.Field {...contentFieldConfig}>
-          {(field) => <PostContentField field={field} />}
-        </form.Field>
+      <form.Field {...contentFieldConfig}>
+        {(field) => <PostContentField field={field} />}
+      </form.Field>
 
-        <form.Field {...tagFieldConfig}>
-          {(field) => <PostTagsField field={field} />}
-        </form.Field>
-      </CardContent>
+      <form.Field {...tagFieldConfig}>
+        {(field) => <PostTagsField field={field} />}
+      </form.Field>
 
-      <CardFooter className="flex justify-end gap-4 mt-6">
+      <div className="flex justify-end gap-4 pt-6">
         <Button
           type="button"
           variant="outline"
@@ -88,7 +86,7 @@ const PostForm = ({ strategy }: { strategy: PostFormStrategy }) => {
             </Button>
           )}
         </form.Subscribe>
-      </CardFooter>
+      </div>
     </form>
   );
 };
