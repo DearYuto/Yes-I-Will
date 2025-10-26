@@ -39,7 +39,7 @@ const postService = {
   create: (data: CreatePostData): Promise<Post> =>
     apiClient.post<Post>(POSTS_ENDPOINT, data),
   update: (id: number, data: Partial<CreatePostData>): Promise<Post> =>
-    apiClient.put<Post>(`${POSTS_ENDPOINT}/${id}`, data),
+    apiClient.patch<Post>(`${POSTS_ENDPOINT}/${id}`, data),
   delete: (id: number): Promise<void> =>
     apiClient.delete<void>(`${POSTS_ENDPOINT}/${id}`),
 };
