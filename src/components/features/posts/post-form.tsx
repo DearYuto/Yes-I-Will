@@ -16,16 +16,21 @@ import {
 } from "./form-fields";
 import { PostTagsField, tagFieldConfig } from "./form-fields/post-tags-field";
 
-const PostForm = ({ strategy }: { strategy: PostFormStrategy }) => {
+interface PostFormProps {
+  strategy: PostFormStrategy;
+  initialValues?: Partial<PostFormData>;
+}
+
+const PostForm = ({ strategy, initialValues }: PostFormProps) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm({
     defaultValues: {
-      title: "",
-      body: "",
-      category: "FREE",
-      tags: [],
+      title: initialValues?.title || "",
+      body: initialValues?.body || "",
+      category: initialValues?.category || "FREE",
+      tags: initialValues?.tags || [],
     } as PostFormData,
     onSubmit: async ({ value }) => {
       setIsSubmitting(true);
@@ -82,7 +87,11 @@ const PostForm = ({ strategy }: { strategy: PostFormStrategy }) => {
         >
           {(state) => (
             <Button type="submit" disabled={!state.canSubmit || isSubmitting}>
-              {isSubmitting ? "업로드 중.." : "작성하기"}
+              {isSubmitting
+                ? "저장 중..."
+                : initialValues
+                ? "수정하기"
+                : "작성하기"}
             </Button>
           )}
         </form.Subscribe>

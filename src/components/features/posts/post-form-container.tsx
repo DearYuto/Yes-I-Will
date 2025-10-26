@@ -3,12 +3,14 @@
 import PostForm from "./post-form";
 import { PostFormStrategies } from "@/lib/strategies/post-form.strategies";
 import PageContainer from "@/components/common/page-container";
+import { PostFormData } from "@/lib/types/post";
 
 interface PostFormContainerProps {
   mode: "create" | "update";
   id?: number;
   title: string;
   description?: string;
+  initialValues?: Partial<PostFormData>;
 }
 
 const PostFormContainer = ({
@@ -16,9 +18,10 @@ const PostFormContainer = ({
   id,
   title,
   description,
+  initialValues,
 }: PostFormContainerProps) => {
   if (mode === "update" && !id) {
-    throw new Error("ID is required for update mode");
+    throw new Error("게시글 ID가 필요합니다.");
   }
 
   const strategy =
@@ -35,7 +38,7 @@ const PostFormContainer = ({
         )}
       </div>
 
-      <PostForm strategy={strategy} />
+      <PostForm strategy={strategy} initialValues={initialValues} />
     </PageContainer>
   );
 };

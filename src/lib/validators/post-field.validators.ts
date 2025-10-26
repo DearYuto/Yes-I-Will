@@ -40,8 +40,8 @@ export const postFieldValidators = {
       return `금칙어(${forbiddenWord})이/가 포함되어 있습니다.`;
     }
 
-    if (value.length < 10) {
-      return "내용은 최소 10자 이상이어야 합니다.";
+    if (value.length < 1) {
+      return "내용은 최소 1자 이상이어야 합니다.";
     }
 
     if (value.length > 2_000) {
