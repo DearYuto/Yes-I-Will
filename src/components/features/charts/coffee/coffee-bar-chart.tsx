@@ -24,6 +24,7 @@ interface CoffeeBarChartProps {
 const CoffeeBarChart = ({ data }: CoffeeBarChartProps) => {
   const dataWithColors = data.map((item) => ({
     ...item,
+    name: item.brand,
     fill: BRAND_COLORS[item.brand as keyof typeof BRAND_COLORS],
   }));
 
@@ -54,12 +55,10 @@ const CoffeeBarChart = ({ data }: CoffeeBarChartProps) => {
           width={50}
         />
         <Tooltip
-          content={
-            <CustomTooltip active={true} payload={[]} customLabel="인기도" />
-          }
+          content={<CustomTooltip active={true} payload={[]} />}
           cursor={false}
         />
-        <Bar dataKey="popularity" />
+        <Bar dataKey="popularity" name="인기도" />
       </BarChart>
     </ResponsiveContainer>
   );

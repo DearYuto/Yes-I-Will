@@ -9,8 +9,8 @@ interface CustomTooltipProps {
 const CustomTooltip = ({
   active,
   payload,
-  showMultiple = false,
   customLabel,
+  showMultiple = false,
 }: CustomTooltipProps) => {
   if (!active || !payload || !payload.length) {
     return null;
@@ -18,10 +18,13 @@ const CustomTooltip = ({
 
   if (!showMultiple) {
     const item = payload[0];
+
     return (
       <div className="bg-white border border-gray-200 rounded-lg shadow-lg p-3">
-        {customLabel && (
+        {customLabel ? (
           <p className="font-semibold text-gray-500 mb-2">{customLabel}</p>
+        ) : (
+          <p>{payload[0].payload.name}</p>
         )}
         <div className="flex items-center gap-2">
           <CustomTooltipItem item={item} />
@@ -47,6 +50,7 @@ const CustomTooltip = ({
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const CustomTooltipItem = ({ item }: { item: any }) => {
+  console.log(item, "item");
   return (
     <div className="flex items-center gap-2 py-0.5">
       <div
