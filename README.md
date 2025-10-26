@@ -63,6 +63,10 @@ NEXT_PUBLIC_API_URL=https://fe-hiring-rest-api.vercel.app
 - **Lucide React** - 아이콘 라이브러리
 - **class-variance-authority** - 조건부 스타일링
 
+### Data Visualization
+
+- **Recharts** - React 기반 차트 라이브러리
+
 ### Code Quality
 
 - **ESLint** - 코드 린팅
@@ -104,8 +108,22 @@ src/
 │   │   │       ├── post-category-field.tsx
 │   │   │       ├── post-content-field.tsx
 │   │   │       └── post-tags-field.tsx
+│   │   ├── charts/            # 차트 관련
+│   │   │   ├── chart-header.tsx      # 차트 헤더
+│   │   │   ├── chart-body.tsx        # 차트 바디
+│   │   │   ├── mood/                 # 감정 차트
+│   │   │   │   ├── mood-stack-bar-chart.tsx
+│   │   │   │   └── mood-stack-area-chart.tsx
+│   │   │   ├── team/                 # 팀 차트
+│   │   │   │   └── team-multi-line-chart.tsx
+│   │   │   └── coffee/               # 커피 차트
+│   │   │       ├── coffee-bar-chart.tsx
+│   │   │       └── coffee-donut-chart.tsx
 │   │   └── layout/            # 레이아웃 관련
 │   │       └── app-sidebar.tsx
+│   ├── charts/                # 재사용 차트 컴포넌트
+│   │   └── tooltip/
+│   │       └── custom-tooltip.tsx    # 커스텀 툴팁
 │   └── common/                # 공통 컴포넌트
 │       └── page-container.tsx
 │
@@ -114,15 +132,18 @@ src/
 │   │   └── api-client.ts
 │   ├── services/              # 서비스 레이어
 │   │   ├── post-service.ts
-│   │   └── login-service.ts
+│   │   ├── login-service.ts
+│   │   └── chart-service.ts
 │   ├── strategies/            # 전략 패턴
 │   │   └── post-form.strategies.ts
 │   ├── validators/            # 유효성 검사
 │   │   └── post-field.validators.ts
 │   ├── constants/             # 상수
-│   │   └── post-categories.ts
+│   │   ├── post-categories.ts
+│   │   └── chart-colors.ts
 │   ├── types/                 # 타입 정의
-│   │   └── post.ts
+│   │   ├── post.ts
+│   │   └── chart.ts
 │   └── utils/                 # 유틸리티
 │       ├── cn.ts
 │       └── query-string.ts
@@ -162,11 +183,35 @@ src/
 - **태그**: 최대 5개, 중복 불가, 각 24자 이내
 - **IME 조합 처리**: 한글 입력 시 조합 완료 후 태그 추가
 
-### 3. UI/UX
+### 3. 차트 기능
+
+#### 감정 트렌드 차트
+
+- **스택형 바 차트**: 주간별 감정 분포 (happy, tired, stressed)
+- **스택형 면적 차트**: 주간별 감정 트렌드 시각화
+- **범례 상호작용**: 클릭으로 데이터 시리즈 show/hide 토글
+- **커스텀 툴팁**: 모든 데이터 포인트 정보 표시
+
+#### 팀별 성과 차트
+
+- **멀티라인 차트**: 커피 섭취량 대비 버그 수 & 생산성 시각화
+- **이중 Y축**: 버그 수(왼쪽) / 생산성(오른쪽)
+- **팀별 색상 구분**: Frontend, Backend, AI, Design
+- **라인 스타일**: 실선(버그) / 점선(생산성)
+- **데이터 마커**: 원형(버그) / 사각형(생산성)
+
+#### 커피 브랜드 차트
+
+- **바 차트**: 브랜드별 인기도 비교
+- **도넛 차트**: 브랜드별 점유율 시각화
+- **브랜드별 커스텀 색상**: 일관된 시각적 아이덴티티
+
+### 4. UI/UX
 
 - 반응형 디자인 (모바일/데스크톱)
 - 스켈레톤 로더를 통한 레이아웃 시프트(CLS) 방지
 - 실시간 에러 메시지 표시
+- 인터랙티브 차트 (범례 클릭, 호버 툴팁)
 
 ## 아키텍쳐 설계
 
@@ -390,40 +435,96 @@ interface PostTitleFieldProps {
 - 고정 높이 컨테이너로 페이지네이션 위치 고정
 - Flexbox로 헤더/바디/푸터 레이아웃 구성
 
+### 6. 차트 범례 인터랙션 구현
+
+**문제:** Recharts는 범례 클릭으로 데이터 토글 기능을 기본 제공하지 않음
+
+**해결:**
+
+```typescript
+const [hiddenDataKeys, setHiddenDataKeys] = useState<Set<string>>(new Set());
+
+const handleLegendClick = (dataKey: string) => {
+  setHiddenDataKeys((prev) => {
+    const newSet = new Set(prev);
+    if (newSet.has(dataKey)) {
+      newSet.delete(dataKey);
+      return newSet;
+    }
+
+    newSet.add(dataKey);
+    return newSet;
+  });
+};
+
+// Legend 설정
+<Legend
+  formatter={(value, entry) => {
+    const dataKey = entry.dataKey as string;
+    const isHidden = hiddenDataKeys.has(dataKey);
+    return (
+      <span
+        className={`text-sm cursor-pointer ${
+          isHidden ? "text-gray-300 line-through" : "text-gray-600"
+        }`}
+      >
+        {value}
+      </span>
+    );
+  }}
+  onClick={(e) => handleLegendClick(e.dataKey as string)}
+/>
+
+// 각 데이터 시리즈에 hide prop 적용
+<Bar
+  dataKey="happy"
+  hide={hiddenDataKeys.has("happy")}
+  // ... other props
+/>
+```
+
+**장점:**
+
+- 사용자가 원하는 데이터만 선택적으로 확인 가능
+- 시각적 피드백(회색 + 취소선)으로 상태 명확히 표시
+- `Set` 자료구조로 효율적인 토글 상태 관리
+
 # 기능 요구 사항
 
 #### 1. 게시판 기능
 
-- [ ] 게시판 기능을 구현한다.
-- [ ] 게시글 작성을 할 수 있어야 한다.
-  - [ ] 게시글 제목은 최대 80자까지 입력할 수 있다.
-  - [ ] 게시글 본문은 최대 2000자, 금칙어 필터가 적용되어야 한다.
-  - [ ] 카테고리는 NOTICE, QNA, FREE로 구성되어 있다.
-  - [ ] 태그를 작성할 수 있다.
-    - [ ] 태그 최대 5개
-    - [ ] 중복 불가
-    - [ ] 각 24자 이내
-- [ ] 게시글을 수정할 수 있어야 한다.
-- [ ] 게시글을 삭제할 수 있어야 한다.
-- [ ] 게시글 검색을 할 수 있어야 한다.
-  - [ ] 제목 및 본문 내용을 검색할 수 있다.
-- [ ] 게시글 페이지네이션은 커서 기반으로 prev, next로 구현한다.
-- [ ] 정렬은 title 또는 createdAt을 기준으로 내림차순, 오름차순이 가능해야 한다.
-- [ ] 카테고리별 필터링(NOTICE, QNA, FREE)이 가능해야 한다.
-- [ ] 금칙어 필터가 포함되는 경우 게시글을 등록할 수 없어야 한다. (금칙어 목록: 캄보디아, 프놈펜, 불법체류, 텔레그램)
+- [x] 게시판 기능을 구현한다.
+- [x] 게시글 작성을 할 수 있어야 한다.
+  - [x] 게시글 제목은 최대 80자까지 입력할 수 있다.
+  - [x] 게시글 본문은 최대 2000자, 금칙어 필터가 적용되어야 한다.
+  - [x] 카테고리는 NOTICE, QNA, FREE로 구성되어 있다.
+  - [x] 태그를 작성할 수 있다.
+    - [x] 태그 최대 5개
+    - [x] 중복 불가
+    - [x] 각 24자 이내
+- [x] 게시글을 수정할 수 있어야 한다.
+- [x] 게시글을 삭제할 수 있어야 한다.
+- [x] 게시글 검색을 할 수 있어야 한다.
+  - [x] 제목 및 본문 내용을 검색할 수 있다.
+- [x] 게시글 페이지네이션은 커서 기반으로 prev, next로 구현한다.
+- [x] 정렬은 title 또는 createdAt을 기준으로 내림차순, 오름차순이 가능해야 한다.
+- [x] 카테고리별 필터링(NOTICE, QNA, FREE)이 가능해야 한다.
+- [x] 금칙어 필터가 포함되는 경우 게시글을 등록할 수 없어야 한다. (금칙어 목록: 캄보디아, 프놈펜, 불법체류, 텔레그램)
 
 #### 2. 차트 기능
 
-- [ ] 스택형 바, 면적 차트를 구현한다.
-  - [ ] X축은 Week, Y축은 백분율로 각 항목은(happy, tired, stressed)이 누적(Stacked) 형태로 표시되어야 한다.
-- [ ] 멀티라인 차트를 구현한다.
-  - [ ] X축은 커피 섭취량(잔/일), 왼쪽 Y축: 버그 수(bugs), 오른쪽 Y축: 생산성 점수(productivity)
-  - [ ] 범례(Legend): 팀별 라인 구분
-  - [ ] 각 팀(Frontend, Backend, AI 등)에 대해 두 개의 라인 표시
-  - [ ] 실선: 버그 수
-  - [ ] 점선: 생산성
-  - [ ] 동일 팀은 동일 색상 유지
+- [x] 스택형 바, 면적 차트를 구현한다.
+  - [x] X축은 Week, Y축은 백분율로 각 항목은(happy, tired, stressed)이 누적(Stacked) 형태로 표시되어야 한다.
+- [x] 멀티라인 차트를 구현한다.
+  - [x] X축은 커피 섭취량(잔/일), 왼쪽 Y축: 버그 수(bugs), 오른쪽 Y축: 생산성 점수(productivity)
+  - [x] 범례(Legend): 팀별 라인 구분
+  - [x] 각 팀(Frontend, Backend, AI 등)에 대해 두 개의 라인 표시
+  - [x] 실선: 버그 수
+  - [x] 점선: 생산성
+  - [x] 동일 팀은 동일 색상 유지
 - [ ] 데이터 포인트 마커 표시
-  - [ ] 원형: 버그 수
-  - [ ] 사각형: 생산성
-- [ ] 데이터 포인트 호버 시 툴팁에 호버된 라인의 포인트 X축에 해당하는 커피 잔수와 버그 수, 생산성 점수가 함께 표시되어야 한다.
+  - [x] 원형: 버그 수
+  - [x] 사각형: 생산성
+- [x] 데이터 포인트 호버 시 툴팁에 호버된 라인의 포인트 X축에 해당하는 커피 잔수와 버그 수, 생산성 점수가 함께 표시되어야 한다.
+- [x] 인기 커피 브랜드의 바 차트를 구현한다.
+- [x] 인기 커피 브랜드의 도넛 차트를 구현한다.
