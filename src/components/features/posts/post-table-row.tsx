@@ -5,7 +5,7 @@ import Link from "next/link";
 import { POST_CATEGORIES } from "@/lib/constants/post-categories";
 
 const PostTableRow = ({ id, title, category, userId, createdAt }: Post) => {
-  const postURL = `/posts/${id}`;
+  const postURL = `/posts/details/${id}`;
 
   const getCategoryStyle = (category: string) => {
     const styles = {
