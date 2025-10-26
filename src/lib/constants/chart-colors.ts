@@ -13,7 +13,7 @@ export const BRAND_COLORS = {
 };
 
 export const TEAM_COLORS = {
-  Frontend: "#A1ECFFFF",
-  Backend: "#B9FDADFF",
-  AI: "#FF9CABFF",
+  Frontend: "#A1C5FFFF",
+  Backend: "#FDADD4FF",
+  AI: "#DB9CFFFF",
 };
