@@ -34,7 +34,7 @@ const postService = {
       POSTS_ENDPOINT,
       params as Record<string, QueryValue>
     ),
-  getById: (id: number): Promise<Post> =>
+  getById: (id: string): Promise<Post> =>
     apiClient.get<Post>(`${POSTS_ENDPOINT}/${id}`),
   create: (data: CreatePostData): Promise<Post> =>
     apiClient.post<Post>(POSTS_ENDPOINT, data),
