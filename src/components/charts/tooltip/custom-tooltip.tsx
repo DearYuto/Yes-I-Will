@@ -50,7 +50,6 @@ const CustomTooltip = ({
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const CustomTooltipItem = ({ item }: { item: any }) => {
-  console.log(item, "item");
   return (
     <div className="flex items-center gap-2 py-0.5">
       <div

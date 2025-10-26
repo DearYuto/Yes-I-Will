@@ -1,4 +1,5 @@
 import {
+  teamBugAndProductivityTrendChartService,
   topCoffeeBrandsService,
   weeklyMoodTrendChartService,
 } from "@/lib/services/chart-service";
@@ -9,12 +10,14 @@ import ChartHeader from "@/components/features/charts/chart-header";
 import ChartBody from "@/components/features/charts/chart-body";
 import MoodStackBarChart from "@/components/features/charts/mood/mood-stack-bar-chart";
 import MoodStackAreaChart from "@/components/features/charts/mood/mood-stack-area-chart";
+import TeamMultiLineChart from "@/components/features/charts/team/team-multi-line-chart";
 
 export default async function ChartsPage() {
   return (
     <PageContainer>
       <CoffeeCharts />
       <WeeklyMoodTrendCharts />
+      <TeamBugAndProductivityTrendCharts />
     </PageContainer>
   );
 }
@@ -49,6 +52,25 @@ async function WeeklyMoodTrendCharts() {
       <ChartBody>
         <MoodStackBarChart data={stackBarChartData} />
         <MoodStackAreaChart data={stackAreaChartData} />
+      </ChartBody>
+    </>
+  );
+}
+
+async function TeamBugAndProductivityTrendCharts() {
+  const teamBugAndProductivityTrendChartData =
+    await teamBugAndProductivityTrendChartService.get();
+
+  return (
+    <>
+      <ChartHeader
+        title="팀별 멀티라인 차트"
+        description="팀별 버그 수와 생산성, 커피 섭취량을 멀티라인 차트로 확인하세요."
+      />
+      <ChartBody>
+        <TeamMultiLineChart
+          data={teamBugAndProductivityTrendChartData.teams ?? []}
+        />
       </ChartBody>
     </>
   );
