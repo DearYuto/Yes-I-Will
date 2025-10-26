@@ -25,6 +25,7 @@ export const PostCategoryField = ({ field }: PostCategoryFieldProps) => {
         <SelectTrigger
           id="category"
           aria-invalid={!!field.state.meta.errors.length}
+          className="shadow-none"
         >
           <SelectValue placeholder="카테고리를 선택하세요" />
         </SelectTrigger>

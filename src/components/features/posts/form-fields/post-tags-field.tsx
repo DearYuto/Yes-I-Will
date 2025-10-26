@@ -87,6 +87,7 @@ export const PostTagsField = ({ field }: PostTagsFieldProps) => {
         onKeyDown={handleKeyDown}
         onBlur={field.handleBlur}
         aria-invalid={!!displayError}
+        className="shadow-none"
       />
     </FormFieldWrapper>
   );

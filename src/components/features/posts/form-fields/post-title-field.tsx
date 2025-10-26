@@ -22,6 +22,7 @@ export const PostTitleField = ({ field }: PostTitleFieldProps) => {
         onChange={(e) => field.handleChange(e.target.value)}
         onBlur={field.handleBlur}
         aria-invalid={!!field.state.meta.errors.length}
+        className="shadow-none"
       />
     </FormFieldWrapper>
   );
