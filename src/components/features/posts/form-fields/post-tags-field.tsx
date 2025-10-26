@@ -19,21 +19,18 @@ export const PostTagsField = ({ field }: PostTagsFieldProps) => {
   const tags = field.state.value || [];
 
   const handleAddTag = (tagToAdd: string) => {
-    const validationError = postFieldValidators.tag(tagToAdd, tags);
+    const trimmedTag = tagToAdd.trim();
+    const validationError = postFieldValidators.tag(trimmedTag, tags);
 
     if (validationError) {
       setInputError(validationError);
       return;
     }
 
-    const trimmedTag = tagToAdd.trim();
     const newTags = [...tags, trimmedTag];
     field.handleChange(newTags);
+    setInputValue("");
     setInputError("");
-
-    requestAnimationFrame(() => {
-      setInputValue("");
-    });
   };
 
   const handleRemoveTag = (indexToRemove: number) => {
@@ -45,7 +42,7 @@ export const PostTagsField = ({ field }: PostTagsFieldProps) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleAddTag((e.target as HTMLInputElement).value);
     }
@@ -95,5 +92,4 @@ export const PostTagsField = ({ field }: PostTagsFieldProps) => {
 
 export const tagFieldConfig = {
   name: "tags" as const,
-  defaultValue: [] as string[],
 };
