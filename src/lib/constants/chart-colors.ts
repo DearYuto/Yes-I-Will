@@ -1,7 +1,19 @@
-const chartColors = {
+export const EMOTION_COLORS = {
   happy: "#6DABE2FF",
   tired: "#FFB298FF",
   stressed: "#FF7B8FFF",
 };
 
-export default chartColors;
+export const BRAND_COLORS = {
+  스타벅스: "#00704A",
+  컴포즈커피: "#FFA500",
+  커피빈: "#4A2C2A",
+  바나프레소: "#FF6B6B",
+  기타: "#9CA3AF",
+};
+
+export const TEAM_COLORS = {
+  Frontend: "#A1ECFFFF",
+  Backend: "#B9FDADFF",
+  AI: "#FF9CABFF",
+};
