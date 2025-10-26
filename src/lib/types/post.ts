@@ -17,3 +17,15 @@ export interface PostFormData {
   category: PostCategory;
   tags: string[];
 }
+
+export interface PostSearchParams {
+  limit?: number;
+  prevCursor?: string;
+  nextCursor?: string;
+  sort?: "createdAt" | "title";
+  order?: "asc" | "desc";
+  category?: PostCategory;
+  from?: string;
+  to?: string;
+  search?: string;
+}
